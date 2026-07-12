@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 namespace MD
 {
@@ -7,6 +8,7 @@ namespace MD
     {
         public static InputManager instance;
         private PlayerControls playerControls;
+        public PlayerManager player;
 
         [Header("Inputs")]
         [SerializeField] private bool leftClick = false;
@@ -26,6 +28,27 @@ namespace MD
             }
 
             DontDestroyOnLoad(gameObject);
+        }
+
+        private void Start()
+        {
+            SceneManager.activeSceneChanged += OnSceneChanged;
+            gameObject.SetActive(false);
+        }
+
+        private void OnSceneChanged(Scene currentScene, Scene newScene)
+        {
+            Scene activateScene = SceneManager.GetActiveScene();
+
+            // DISABLE THE PLAYER INPUT MANAGER WHEN ON MENU SCENE, ENABLE IN EVERY OTHER SCENE
+            if (activateScene.buildIndex == WorldSaveGameManager.instance.menuSceneIndex)
+            {
+                gameObject.SetActive(false);
+            }
+            else
+            {
+                gameObject.SetActive(true);
+            }
         }
 
         private void OnEnable()
@@ -57,6 +80,10 @@ namespace MD
             if (leftClick)
             {
                 leftClick = false;
+
+                if (player == null)
+                    return;
+
                 // IF THERE IS A MONSTER ATTACK IT
                 // IF THERE IS AN INTERACTABLE, INTERACT WITH IT
                 // IF THERE IS NOTHING, ATTEMPT TO MOVE TO THE POSITION
@@ -65,6 +92,8 @@ namespace MD
 
                 if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
                     movementPosition = hit.point;
+
+                player.playerLocomotionManager.MovePlayerToPosition(movementPosition);
             }
         }
         // DRAW A SPHERE TO SEE WHERE WE CLICKED

@@ -8,6 +8,7 @@ namespace MD
         public static WorldSaveGameManager instance;
 
         [Header("World Index")]
+        public int menuSceneIndex = 0;
         [SerializeField] int worldSceneIndex = 1;
 
         private void Awake()
