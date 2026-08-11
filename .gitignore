@@ -84,7 +84,7 @@ Shattered Realms/[Aa]ssets/[Ss]ceneDependencyCache*
 # Custom ignores (your paid & private assets)
 Shattered Realms/[Aa]ssets/Art/
 Shattered Realms/[Aa]ssets/Synty/
-Shattered Realms/[Aa]ssets/Prefabs/
+# Shattered Realms/[Aa]ssets/Prefabs/
 
 # TextMesh Pro (installed inside Assets → MUST be ignored)
 Shattered Realms/[Aa]ssets/TextMesh Pro/
