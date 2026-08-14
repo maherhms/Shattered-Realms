@@ -7,13 +7,17 @@ namespace MD
     public class PlayerManager : NetworkBehaviour
     {
         [HideInInspector] public NavMeshAgent navMeshAgent;
+        [HideInInspector] public Animator animator;
         [HideInInspector] public PlayerLocomotionManager playerLocomotionManager;
+        [HideInInspector] public PlayerNetworkManager playerNetworkManager;
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
 
-            navMeshAgent = GetComponentInChildren<NavMeshAgent>();
+            navMeshAgent = GetComponent<NavMeshAgent>();
+            animator = GetComponent<Animator>();
             playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
+            playerNetworkManager = GetComponent<PlayerNetworkManager>();
         }
 
         public override void OnNetworkSpawn()
@@ -25,6 +29,15 @@ namespace MD
             {
                 InputManager.instance.player = this;
             }
+
+            playerNetworkManager.isMoving.OnValueChanged += playerNetworkManager.OnIsMovingChanged;
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            base.OnNetworkDespawn();
+
+            playerNetworkManager.isMoving.OnValueChanged -= playerNetworkManager.OnIsMovingChanged;
         }
     }
 }
