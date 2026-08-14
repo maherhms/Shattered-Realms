@@ -12,7 +12,7 @@ namespace MD
         {
             DontDestroyOnLoad(gameObject);
 
-            navMeshAgent = GetComponentInChildren<NavMeshAgent>();
+            navMeshAgent = GetComponent<NavMeshAgent>();
             playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
         }
 
