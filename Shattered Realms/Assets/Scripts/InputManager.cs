@@ -77,6 +77,8 @@ namespace MD
         }
         private void HandleLeftClickAction()
         {
+            player.playerLocomotionManager.GetPlayerIsMoving();
+
             if (leftClick)
             {
                 leftClick = false;
