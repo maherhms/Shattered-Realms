@@ -13,6 +13,10 @@ namespace MD
         {
             player = GetComponent<PlayerManager>();
         }
+        public void HandleMovement()
+        {
+
+        }
         public void MovePlayerToPosition(Vector3 newPosition)
         {
             player.navMeshAgent.SetDestination(newPosition);

@@ -18,8 +18,30 @@ namespace MD
             animator = GetComponent<Animator>();
             playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
             playerNetworkManager = GetComponent<PlayerNetworkManager>();
+            
         }
+        private void Update()
+        {
+            if (IsOwner)
+            {
+                playerLocomotionManager.HandleMovement();
+            }
+            else
+            {
+                //transform.position = playerNetworkManager.networkPosition.Value;
+                transform.position = 
+                    Vector3.SmoothDamp(transform.position, 
+                    playerNetworkManager.networkPosition.Value, 
+                    ref playerNetworkManager.networkPositionVelocity, 
+                    playerNetworkManager.networkSmoothTime);
 
+                //transform.rotation = playerNetworkManager.networkRotation.Value;
+                transform.rotation = 
+                    Quaternion.Slerp(transform.rotation, 
+                    playerNetworkManager.networkRotation.Value, 
+                    Time.deltaTime / playerNetworkManager.networkSmoothTime);
+            }
+        }
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
