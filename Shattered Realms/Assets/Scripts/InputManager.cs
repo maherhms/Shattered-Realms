@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
@@ -12,6 +13,7 @@ namespace MD
 
         [Header("Inputs")]
         [SerializeField] private bool leftClick = false;
+        [SerializeField] private bool holdLeftClick = false;
 
         [Header("Movement position")]
         [SerializeField] Vector3 movementPosition;
@@ -62,6 +64,9 @@ namespace MD
 
             // MOUSE INPUT
             playerControls.Player.LeftClick.performed += i => leftClick = true;
+            playerControls.Player.HoldLeftClick.performed += i => holdLeftClick = true;
+            playerControls.Player.HoldLeftClick.canceled += i => holdLeftClick = false;
+            playerControls.Player.HoldLeftClick.canceled += i => HandleCancelHoldLeftClick();
             // WASD INPUT
             playerControls.Player.WASD.performed += i => movementInput = i.ReadValue<Vector2>();
 
@@ -84,7 +89,7 @@ namespace MD
         }
         private void HandleLeftClickAction()
         {
-            if (leftClick)
+            if (leftClick || holdLeftClick)
             {
                 leftClick = false;
 
@@ -127,6 +132,15 @@ namespace MD
             // CREATE DIRECTION TO MOVE BASED ON CAMERA"S DIRECTION AND YOUR WAS KEY INPUT
             Vector3 moveDirection = (camerasForwardDirection * movementInput.y) + ( camerasRightDirection * movementInput.x);
             player.playerLocomotionManager.MovePlayerToPosition(player.transform.position +  moveDirection);
+        }
+        private void HandleCancelHoldLeftClick()
+        {
+            // IF WE WERE HOLDING THE CLICK, CANCEL OUR MOVEMENT ( THIS ALLOWS 1 CLICK MOVEMENT TO STILL FINISH ITS PATH )
+            if (holdLeftClick)
+            {
+                holdLeftClick = false;
+                player.playerLocomotionManager.MovePlayerToPosition(player.transform.position);
+            }
         }
         // DRAW A SPHERE TO SEE WHERE WE CLICKED
         private void OnDrawGizmos()

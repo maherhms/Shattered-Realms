@@ -102,6 +102,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Hold Left Click"",
+                    ""type"": ""Button"",
+                    ""id"": ""ca0f3f34-01a9-4844-92c1-d7a80f08110f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Hold"",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""WASD"",
                     ""type"": ""PassThrough"",
                     ""id"": ""a25269ce-73d8-480e-a124-67bb34fc11ca"",
@@ -120,6 +129,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Left Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d4cb63cf-6b1b-4d58-944f-c308388ed204"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Hold Left Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -763,6 +783,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_LeftClick = m_Player.FindAction("Left Click", throwIfNotFound: true);
+        m_Player_HoldLeftClick = m_Player.FindAction("Hold Left Click", throwIfNotFound: true);
         m_Player_WASD = m_Player.FindAction("WASD", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
@@ -858,6 +879,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_LeftClick;
+    private readonly InputAction m_Player_HoldLeftClick;
     private readonly InputAction m_Player_WASD;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
@@ -874,6 +896,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/LeftClick".
         /// </summary>
         public InputAction @LeftClick => m_Wrapper.m_Player_LeftClick;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/HoldLeftClick".
+        /// </summary>
+        public InputAction @HoldLeftClick => m_Wrapper.m_Player_HoldLeftClick;
         /// <summary>
         /// Provides access to the underlying input action "Player/WASD".
         /// </summary>
@@ -907,6 +933,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @LeftClick.started += instance.OnLeftClick;
             @LeftClick.performed += instance.OnLeftClick;
             @LeftClick.canceled += instance.OnLeftClick;
+            @HoldLeftClick.started += instance.OnHoldLeftClick;
+            @HoldLeftClick.performed += instance.OnHoldLeftClick;
+            @HoldLeftClick.canceled += instance.OnHoldLeftClick;
             @WASD.started += instance.OnWASD;
             @WASD.performed += instance.OnWASD;
             @WASD.canceled += instance.OnWASD;
@@ -924,6 +953,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @LeftClick.started -= instance.OnLeftClick;
             @LeftClick.performed -= instance.OnLeftClick;
             @LeftClick.canceled -= instance.OnLeftClick;
+            @HoldLeftClick.started -= instance.OnHoldLeftClick;
+            @HoldLeftClick.performed -= instance.OnHoldLeftClick;
+            @HoldLeftClick.canceled -= instance.OnHoldLeftClick;
             @WASD.started -= instance.OnWASD;
             @WASD.performed -= instance.OnWASD;
             @WASD.canceled -= instance.OnWASD;
@@ -1234,6 +1266,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnLeftClick(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Hold Left Click" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnHoldLeftClick(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "WASD" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

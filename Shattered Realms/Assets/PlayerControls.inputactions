@@ -16,6 +16,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Hold Left Click",
+                    "type": "Button",
+                    "id": "ca0f3f34-01a9-4844-92c1-d7a80f08110f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Hold",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "WASD",
                     "type": "PassThrough",
                     "id": "a25269ce-73d8-480e-a124-67bb34fc11ca",
@@ -34,6 +43,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "Left Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d4cb63cf-6b1b-4d58-944f-c308388ed204",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Hold Left Click",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
