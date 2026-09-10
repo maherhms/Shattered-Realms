@@ -16,6 +16,10 @@ namespace MD
         [Header("Movement position")]
         [SerializeField] Vector3 movementPosition;
 
+        [Header("WASD Input")]
+        [SerializeField] bool enableWASDMovement = false;
+        [SerializeField] Vector2 movementInput;
+
         private void Awake()
         {
             if (instance == null)
@@ -58,6 +62,8 @@ namespace MD
 
             // MOUSE INPUT
             playerControls.Player.LeftClick.performed += i => leftClick = true;
+            // WASD INPUT
+            playerControls.Player.WASD.performed += i => movementInput = i.ReadValue<Vector2>();
 
             playerControls.Enable();
         }
@@ -74,6 +80,7 @@ namespace MD
         private void HandleInputActions()
         {
             HandleLeftClickAction();
+            HandleWASDMovement();
         }
         private void HandleLeftClickAction()
         {
@@ -95,6 +102,31 @@ namespace MD
 
                 player.playerLocomotionManager.MovePlayerToPosition(movementPosition);
             }
+        }
+        private void HandleWASDMovement()
+        {
+            if (!enableWASDMovement)
+                return;
+
+            // IF NO MOVEMENT IS DETECTED VIA WASD KEYS, ASSIGN YOUR POSITION AS THE TARGET POSITION AND RETURN
+            if (movementInput.magnitude < 0.001f)
+            {
+                player.playerLocomotionManager.MovePlayerToPosition(player.transform.position);
+                return;
+            }
+
+            // GET THE CAMERA"S FACING DIRECTION BUT TAKE INTO ACCOUNT THE ISOMETRIC VIEW
+            Vector3 camerasForwardDirection = Camera.main.transform.forward;
+            camerasForwardDirection.y = 0;
+            camerasForwardDirection.Normalize();
+
+            Vector3 camerasRightDirection = Camera.main.transform.right;
+            camerasRightDirection.y = 0;
+            camerasRightDirection.Normalize();
+
+            // CREATE DIRECTION TO MOVE BASED ON CAMERA"S DIRECTION AND YOUR WAS KEY INPUT
+            Vector3 moveDirection = (camerasForwardDirection * movementInput.y) + ( camerasRightDirection * movementInput.x);
+            player.playerLocomotionManager.MovePlayerToPosition(player.transform.position +  moveDirection);
         }
         // DRAW A SPHERE TO SEE WHERE WE CLICKED
         private void OnDrawGizmos()

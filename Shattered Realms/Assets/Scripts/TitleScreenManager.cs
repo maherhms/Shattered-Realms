@@ -23,7 +23,6 @@ namespace MD
             FadeOutPressStartMenu();
             FadeInCharacterMenu();
         }
-
         private void FadeOutPressStartMenu()
         {
             if(fadeOutPressStartMenuCoroutine != null)
@@ -31,7 +30,6 @@ namespace MD
 
             fadeOutPressStartMenuCoroutine = StartCoroutine(FadeOutPressStartMenuCoroutine(fadeTime));
         }
-
         private IEnumerator FadeOutPressStartMenuCoroutine(float durationOfFade)
         {
             float timeElapsed = 0f;
@@ -44,7 +42,6 @@ namespace MD
                 yield return null;
             }
         }
-
         // CHARACTER MENU
         public void StartNewGame()
         {
@@ -65,7 +62,6 @@ namespace MD
                 characterMenuButtons[i].SetActive(true);
             }
         }
-
         private IEnumerator FadeInCharacterMenuCoroutine(float durationOfFade)
         {
             float timeElapsed = 0f;

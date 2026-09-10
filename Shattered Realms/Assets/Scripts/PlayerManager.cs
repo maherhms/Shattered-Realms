@@ -14,7 +14,7 @@ namespace MD
         {
             DontDestroyOnLoad(gameObject);
 
-            navMeshAgent = GetComponent<NavMeshAgent>();
+            navMeshAgent = GetComponentInChildren<NavMeshAgent>();
             animator = GetComponent<Animator>();
             playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
             playerNetworkManager = GetComponent<PlayerNetworkManager>();
@@ -25,21 +25,19 @@ namespace MD
             if (IsOwner)
             {
                 playerLocomotionManager.HandleMovement();
+                // IF I AM OWNER OF THIS CHARACTER SEND POSITION AND ROATION TO NETWORK VARIBLES
+                playerNetworkManager.networkPosition.Value = transform.position;
+                playerNetworkManager.networkRotation.Value = transform.rotation;
             }
             else
             {
-                //transform.position = playerNetworkManager.networkPosition.Value;
+                // IF I AM NOT OWNER OF THIS CHARACTER GET POSITION AND ROTATION FROM NETWORK VARIABLES
                 transform.position = 
-                    Vector3.SmoothDamp(transform.position, 
-                    playerNetworkManager.networkPosition.Value, 
-                    ref playerNetworkManager.networkPositionVelocity, 
-                    playerNetworkManager.networkSmoothTime);
+                    Vector3.SmoothDamp(transform.position, playerNetworkManager.networkPosition.Value, 
+                    ref playerNetworkManager.networkPositionVelocity, playerNetworkManager.networkSmoothTime);
 
-                //transform.rotation = playerNetworkManager.networkRotation.Value;
                 transform.rotation = 
-                    Quaternion.Slerp(transform.rotation, 
-                    playerNetworkManager.networkRotation.Value, 
-                    Time.deltaTime / playerNetworkManager.networkSmoothTime);
+                    Quaternion.Slerp(transform.rotation, playerNetworkManager.networkRotation.Value, Time.deltaTime / playerNetworkManager.networkSmoothTime);
             }
         }
         public override void OnNetworkSpawn()
